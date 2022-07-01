@@ -6,7 +6,7 @@ Examples:
     const arr = [{name: 'Elie'}, {name: 'Tim'}, {name: 'Matt'}, {name: 'Colt'}]
     extractValue(arr,'name') // ['Elie', 'Tim', 'Matt', 'Colt']
 */
-const arr = [ { name: 'Elie' }, { name: 'Tim' }, { name: 'Matt' }, { name: 'Colt' } ];
+// const arr = [ { name: 'Elie' }, { name: 'Tim' }, { name: 'Matt' }, { name: 'Colt' } ];
 function extractValue(arr, key) {
 	let newArr = [];
 	return arr.reduce(function(prevItem, currentItem) {
@@ -30,15 +30,18 @@ Examples:
 
 function vowelCount(str) {
 	const newArr = Array.from(str.toLowerCase());
-	let intCount = 0;
+	let intCount = 1;
 	const strVowels = 'aeiou';
 	const newObj = {};
 	return newArr.reduce(function(prevItem, currentItem) {
 		if (strVowels.lastIndexOf(currentItem) !== -1) {
-			newObj[currentItem] = intCount;
-			intCount++;
+			if (newObj[currentItem]) {
+				newObj[currentItem]++;
+				// alert(newObj[currentItem]);
+			} else {
+				newObj[currentItem] = 1;
+			}
 		}
-
 		return newObj;
 	}, '');
 }
@@ -58,20 +61,26 @@ Examples:
         {title: 'Instructor', name: 'Colt'}
        ]
 */
+// const arr = [ { name: 'Elie' }, { name: 'Tim' }, { name: 'Matt' }, { name: 'Colt' } ];
 
 function addKeyAndValue(arr, key, value) {
 	const newArr = [];
-	const newObj = {};
 	return arr.reduce(function(prevItem, currentItem) {
 		currentItem[key] = value;
 		newArr.push(currentItem);
-		return currentItem;
-	}, {});
+		return newArr;
+	}, arr);
 	// return newArr;
 }
 
 /*
-Write a function called partition which accepts an array and a callback and returns an array with two arrays inside of it. The partition function should run the callback function on each value in the array and if the result of the callback function at that specific value is true, the value should be placed in the first subarray. If the result of the callback function at that specific value is false, the value should be placed in the second subarray. 
+Write a function called partition which accepts an array and a callback and 
+returns an array with two arrays inside of it. 
+The partition function should run the callback function on each value 
+in the array and if the result of the callback function at that specific 
+value is true, the value should be placed in the first subarray. 
+If the result of the callback function at that specific value is false, 
+the value should be placed in the second subarray. 
 
 Examples:
     
@@ -92,4 +101,31 @@ Examples:
     partition(names, isLongerThanThreeCharacters) // [['Elie', 'Colt', 'Matt'], ['Tim']]
 */
 
-function partition(arr, callback) {}
+function isEven(val) {
+	return val % 2 === 0;
+}
+
+const arr = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
+
+//   partition(arr, isEven) // [[2,4,6,8], [1,3,5,7]];
+
+function isLongerThanThreeCharacters(val) {
+	return val.length > 3;
+}
+
+const names = [ 'Elie', 'Colt', 'Tim', 'Matt' ];
+
+function partition(arr, callback) {
+	return arr.reduce(
+		function(prevItem, currentItem) {
+			if (callback(currentItem)) {
+				prevItem[0].push(currentItem);
+			} else {
+				prevItem[1].push(currentItem);
+			}
+			return prevItem;
+		},
+		[ [], [] ]
+	);
+}
+//   partition(names, isLongerThanThreeCharacters) // [['Elie', 'Colt', 'Matt'], ['Tim']]
